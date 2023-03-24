@@ -1,0 +1,34 @@
+-- Create a makeup store database
+
+REATE TABLE makeup_store (id INTEGER primary key, kind TEXT, brand TEXT, color TEXT, price INTEGER);
+
+INSERT INTO makeup_store VALUES (1, "Blush", "Fenty", "red", 25);
+INSERT INTO makeup_store VALUES (2, "Blush", "Tarte", "coral", 24);
+INSERT INTO makeup_store VALUES (3, "Eyeliner", "Bobbie Brown", "black", 18);
+INSERT INTO makeup_store VALUES (4, "Foundation", "Tarte", "W2", 40);
+INSERT INTO makeup_store VALUES (5, "Eyeliner", "MAC", "black", 18);
+INSERT INTO makeup_store VALUES (6, "Lipstick", "MAC", "red", 16);
+INSERT INTO makeup_store VALUES (7, "Blush", "Rare Beauty", "coral", 20);
+INSERT INTO makeup_store VALUES (8, "Lipstick", "Fenty", "burgandy", 15);
+INSERT INTO makeup_store VALUES (9, "Foundation", "Lancome", "N33", 32);
+INSERT INTO makeup_store VALUES (10, "Lipstick", "Too Face", "pink", 22);
+INSERT INTO makeup_store VALUES (11, "Eyeshadow", "KVD", "purple", 28);
+INSERT INTO makeup_store VALUES (12, "Eyeshadow", "HUDA Beauty", "red", 42);
+INSERT INTO makeup_store VALUES (13, "Mascara", "Lancome", "black", 25);
+INSERT INTO makeup_store VALUES (14, "Mascara", "CHANEL", "brown", 15);
+INSERT INTO makeup_store VALUES (15, "Eyeliner", "Tarte", "brown", 17);
+
+--display the database ordered by price.
+SELECT * FROM makeup_store 
+ORDER BY price asc;
+
+--what is the avg price of red colored items?
+SELECT AVG(price)
+FROM makeup_store
+WHERE color='red';
+
+--what are the 5 most expensive items? 
+SELECT kind, brand, price
+FROM makeup_store
+order by kind asc
+limit 5;
