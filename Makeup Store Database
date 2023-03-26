@@ -1,6 +1,6 @@
 -- Create a makeup store database
 
-REATE TABLE makeup_store (id INTEGER primary key, kind TEXT, brand TEXT, color TEXT, price INTEGER);
+CREATE TABLE makeup_store (id INTEGER primary key, kind TEXT, brand TEXT, color TEXT, price INTEGER);
 
 INSERT INTO makeup_store VALUES (1, "Blush", "Fenty", "red", 25);
 INSERT INTO makeup_store VALUES (2, "Blush", "Tarte", "coral", 24);
