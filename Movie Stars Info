@@ -1,0 +1,80 @@
+-- create a movie star database 
+
+CREATE TABLE stars(id INTEGER PRIMARY KEY AUTOINCREMENT, fullname TEXT,
+gender TEXT);
+
+INSERT INTO stars(fullname, gender) VALUES ("Jim Carrey", "male");
+INSERT INTO stars(fullname, gender) VALUES ("Johnny Depp", "male");
+INSERT INTO stars(fullname, gender) VALUES ("Emma Watson", "female");
+INSERT INTO stars(fullname, gender) VALUES ("Natalie Portman", "female");
+INSERT INTO stars(fullname, gender) VALUES ("Sean Connery", "male");
+INSERT INTO stars(fullname, gender) VALUES ("Anne Hathaway", "female");
+INSERT INTO stars(fullname, gender) VALUES ("Edward Norton", "male");
+INSERT INTO stars(fullname, gender) VALUES ("Tom Hanks", "male");
+INSERT INTO stars(fullname, gender) VALUES ("Sandra Bullock", "female");
+INSERT INTO stars(fullname, gender) VALUES ("Morgan Freeman", "male");
+INSERT INTO stars(fullname, gender) VALUES ("Keanu Reeves", "male");
+INSERT INTO stars(fullname, gender) VALUES ("Jennifer Lawrence", "female");
+INSERT INTO stars(fullname, gender) VALUES ("Kate Winslet", "female");
+INSERT INTO stars(fullname, gender) VALUES ("Anthony Hopkins", "male");
+INSERT INTO stars(fullname, gender) VALUES ("Idris Elba", "male");
+
+CREATE TABLE movies(id INTEGER PRIMARY KEY AUTOINCREMENT,
+star_id INTEGER,
+movie_title TEXT,
+character TEXT,
+release_year TEXT);
+
+INSERT INTO movies(star_id, movie_title, character, release_year) VALUES (3, "Beauty and the Beast", "Belle", "2017");
+INSERT INTO movies(star_id, movie_title, character, release_year) VALUES (11,"John Wick", "John Wick", "2014");
+INSERT INTO movies(star_id, movie_title, character, release_year) VALUES (14,"Silence of the Lambs", "Dr Hannibal Lecter", "1991");
+INSERT INTO movies(star_id, movie_title, character, release_year) VALUES (5,"Goldfinger", "James Bond", "1964");
+INSERT INTO movies(star_id, movie_title, character, release_year) VALUES (9, "Speed", "Annie", "1994");
+INSERT INTO movies(star_id, movie_title, character, release_year) VALUES (1, "The Mask", "Stanley Ipkiss", "1994");
+INSERT INTO movies(star_id, movie_title, character, release_year) VALUES (7, "Fight Club", "Narrator", "1999");
+INSERT INTO movies(star_id, movie_title, character, release_year) VALUES (13, "Titanic", "Roses Dewitt Bukater", "1997");
+INSERT INTO movies(star_id, movie_title, character, release_year) VALUES (2, "Charlie and the Chocolate Factory", "Willy Wonka", "2005");
+INSERT INTO movies(star_id, movie_title, character, release_year) VALUES (8, "Forrest Gump", "Forrest Gump", "1994");
+INSERT INTO movies(star_id, movie_title, character, release_year) VALUES (15, "Thor", "Heimdall", "2011");
+INSERT INTO movies(star_id, movie_title, character, release_year) VALUES (12, "Winter's Bone", "Ree", "2010");
+INSERT INTO movies(star_id, movie_title, character, release_year) VALUES (6, "Get Smart", "Agent 99", "2008");
+INSERT INTO movies(star_id, movie_title, character, release_year) VALUES (10, "Driving Miss Daisy", "Hoke Colburn", "1989");
+INSERT INTO movies(star_id, movie_title, character, release_year) VALUES (4, "V for Vendetta", "Evey", "2005");
+
+CREATE TABLE awards(id INTEGER PRIMARY KEY AUTOINCREMENT,
+fullname TEXT,
+oscarwin TEXT);
+
+INSERT INTO awards(fullname, oscarwin) VALUES ("Anthony Hopkins", "Yes");
+INSERT INTO awards(fullname, oscarwin) VALUES ("Natalie Portman", "Yes");
+INSERT INTO awards(fullname, oscarwin) VALUES ("Tom Hanks", "Yes");
+INSERT INTO awards(fullname, oscarwin) VALUES ("Morgan Freeman", "Yes");
+INSERT INTO awards(fullname, oscarwin) VALUES ("Johnny Depp", "No");
+INSERT INTO awards(fullname, oscarwin) VALUES ("Keanu Reeves", "No");
+INSERT INTO awards(fullname, oscarwin) VALUES ("Kate Winslet", "Yes");
+INSERT INTO awards(fullname, oscarwin) VALUES ("Sean Connery", "Yes");
+INSERT INTO awards(fullname, oscarwin) VALUES ("Emma Watson", "No");
+INSERT INTO awards(fullname, oscarwin) VALUES ("Sandra Bullock", "Yes");
+INSERT INTO awards(fullname, oscarwin) VALUES ("Idris Elba", "No");
+INSERT INTO awards(fullname, oscarwin) VALUES ("Anne Hathaway", "Yes");
+INSERT INTO awards(fullname, oscarwin) VALUES ("Jim Carrey", "No");
+INSERT INTO awards(fullname, oscarwin) VALUES ("Jennifer Lawrence", "Yes");
+INSERT INTO awards(fullname, oscarwin) VALUES ("Edward Norton", "No");
+
+-- display the movie star's name, gender, and if they've won an oscar.
+SELECT s.fullname, s.gender, a.oscarwin
+    FROM stars s
+    LEFT OUTER JOIN awards a
+    ON s.fullname=a.fullname;
+
+--display the movie star's movies name and their character.
+SELECT s.fullname, m.movie_title, m.character
+    FROM stars s
+    LEFT OUTER JOIN movies m
+    ON s.id=m.star_id;
+
+--how many male movie stars have won an oscar?
+ Select s.gender, COUNT(a.oscarwin) AS oscar_wins
+    FROM stars s
+    JOIN awards a
+    ON s.fullname=a.fullname;
