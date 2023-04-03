@@ -1,0 +1,122 @@
+#In this SQL, I'm querying a database with multiple tables in it to quantify statistics about customer and order data. 
+
+#1. Show Customers (their full names, customer ID, and country) who are not in the US. (Hint: != or <> can be used to say "is not equal to").
+SELECT FirstName, LastName, CustomerID, Country
+FROM chinook.customers
+WHERE Country != 'US';
+
+#2. Show only the Customers from Brazil.
+SELECT *
+FROM chinook.customers
+WHERE Country = 'Brazil';
+
+#3. Find the Invoices of customers who are from Brazil. The resulting table should show the customer's full name, Invoice ID, Date of the invoice, and billing country.
+SELECT customers.FirstName, customers.LastName, invoices.InvoiceId, invoices.InvoiceDate, invoices.BillingCountry
+FROM chinook.invoices
+LEFT JOIN chinook.customers
+ON invoices.CustomerId = customers.CustomerId
+WHERE invoices.BillingCountry = 'Brazil';
+
+#4.Show the Employees who are Sales Agents.
+SELECT *
+FROM chinook.employees
+WHERE Title = 'Sales Support Agent';
+
+#5. Find a unique/distinct list of billing countries from the Invoice table.
+SELECT DISTINCT BillingCountry
+FROM chinook.invoices;
+
+#6. Provide a query that shows the invoices associated with each sales agent. The resulting table should include the Sales Agent's full name.
+SELECT employees.LastName, employees.FirstName, invoices.InvoiceId
+FROM chinook.employees
+JOIN chinook.customers
+ON customers.SupportRepId = employees.EmployeeId
+JOIN chinook.invoices
+ON invoices.CustomerId = customers.CustomerId;
+
+#7. Show the Invoice Total, Customer name, Country, and Sales Agent name for all invoices and customers.
+SELECT employees.FirstName, employees.LastName, customers.FirstName, customers.LastName, customers.Country, invoices.Total
+FROM chinook.employees
+JOIN chinook.customers
+ON customers.SupportRepId = employees.EmployeeId
+JOIN chinook.invoices
+ON invoices.CustomerID = customers.CustomerId;
+
+#8. How many Invoices were there in 2009?
+SELECT COUNT(*)
+FROM chinook.invoices
+WHERE InvoiceDate BETWEEN '2009-01-01' AND '2009-12-31';
+
+#9. What are the total sales for 2009?
+SELECT SUM(Total)
+FROM chinook.invoices
+WHERE InvoiceDate BETWEEN '2009-01-01' AND '2009-12-31';
+
+#10. Write a query that includes the purchased track name with each invoice line ID.
+SELECT tracks.Name, invoice_items.InvoiceLineId
+FROM chinook.invoice_items
+JOIN chinook.tracks
+ON invoice_items.TrackId = tracks.TrackId;
+
+#11. Write a query that includes the purchased track name AND artist name with each invoice line ID.
+SELECT tracks.Name AS Track, artists.name AS Artist , invoice_items.InvoiceLineId
+FROM chinook.invoice_items
+LEFT JOIN chinook.tracks
+ON invoice_items.TrackId = tracks.TrackId
+INNER JOIN chinook.albums
+ON albums.AlbumId = tracks.AlbumId
+LEFT JOIN chinook.artists
+ON artists.ArtistId = albums.ArtistId;
+
+#12. Provide a query that shows all the Tracks, and include the Album name, Media type, and Genre.
+SELECT tracks.name AS 'Track Name', albums.title As 'Album Title', media_types.name AS 'Media Type', genres.name 'Genre'
+FROM chinook.tracks
+JOIN chinook.Albums
+ON tracks.AlbumId = albums.AlbumId
+JOIN chinook.media_types
+ON media_types.MediaTypeId = tracks.MediaTypeId
+JOIN chinook.genres
+ON genres.GenreId = tracks.GenreId;
+
+#13. Show the total sales made by each sales agent.
+SELECT emp.FirstName, emp.LastName,
+ROUND(SUM(Inv.Total), 2) as 'Total Sales' 
+FROM chinook.Employees emp
+JOIN chinook.Customers cust 
+ON cust.SupportRepId = emp.EmployeeId
+JOIN chinook.Invoices Inv 
+ON Inv.CustomerId = cust.CustomerId
+WHERE emp.Title = 'Sales Support Agent' 
+GROUP BY emp.FirstName;
+
+#14. Which sales agent made the most dollars in sales in 2009?
+SELECT employees.FirstName, employees.LastName, ROUND(SUM(Invoices.Total), 2) AS 'Total Sales'
+FROM chinook.employees
+JOIN chinook.customers
+ON employees.EmployeeId = customers.SupportRepId
+JOIN chinook.invoices
+ON customers.CustomerId = invoices.CustomerID
+WHERE employees.Title = 'Sales Support Agent'
+AND invoices.InvoiceDate LIKE '2009%'
+GROUP BY employees.FirstName
+ORDER BY (ROUND(SUM(Invoices.Total), 2)) DESC LIMIT 1;
+
+#15. Show each customer's total number of orders.
+SELECT customers.FirstName, customers.LastName, COUNT (invoices.InvoiceId) AS 'Total Orders'
+FROM chinook.invoices
+LEFT JOIN chinook.customers
+ON invoices.CustomerId = customers.CustomerId
+GROUP BY customers.FirstName;
+
+#16. Show each track and it's type of media.
+SELECT media_types.Name AS 'Media Type', tracks.Name AS 'Track Name'
+FROM chinook.tracks
+JOIN chinook.media_types
+ON tracks.MediaTypeId = media_types.MediaTypeId;
+
+#17. Show the total number of tracks in each genre.
+SELECT genres.Name, COUNT(tracks.TrackId) As 'Total Tracks'
+FROM chinook.genres
+JOIN chinook.tracks
+ON genres.GenreId = tracks.GenreId
+GROUP BY genres.Name;
